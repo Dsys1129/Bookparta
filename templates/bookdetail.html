@@ -79,6 +79,11 @@
       $(document).ready(function () {
         show_details();
       });
+
+      function gotoReviewPage(bookId) {
+        let reviewPageUrl = "/reviews?bookId=" + bookId;
+        window.location.href = reviewPageUrl;
+      }
     </script>
   </head>
   <body>
@@ -99,17 +104,17 @@
     <hr size="1" width="1400px" />
 
     <div>
-      <button class="addReviewbtn">리뷰 작성</button>
+      <button class="addReviewbtn" onclick="gotoReviewPage('{{ book._id }}')">리뷰 작성</button>
     </div>
 
     {% for review in book.reviews %}
     <div class="review-container">
       <div class="review-box">
-        <div class="review-userId">review.userId</div>
-        <div class="review-title">review.title</div>
-        <div class="review-rating">review.rating</div>
+        <div class="review-userId">{{review.userId}}</div>
+        <div class="review-title">{{review.title}}</div>
+        <div class="review-rating">{{review.rating}}</div>
       </div>
-      <div class="review-contents">review.contents</div>
+      <div class="review-contents">{{review.contents}}</div>
     </div>
     {% endfor %}
   </body>
