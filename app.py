@@ -78,20 +78,35 @@ def add_books():
 def get_book(bookId):
     book = db.books.find_one({"_id": ObjectId(bookId)})
     book["_id"] = str(book["_id"])
-    return jsonify({"book": book})
+    return render_template("bookdetail.html", book=book)
 
 
 @app.route("/books")
 def get_books():
     # Object형인 id를 serialization 할 수 없어 str로 변경 후 json으로 반환
-    all_books = list(
-        db.books.find(
-            {}, {"reviews": False, "description": False, "description": False}
-        )
-    )
+    all_books = list(db.books.find({}, {"reviews": False}))
     for book in all_books:
         book["_id"] = str(book["_id"])
-    return jsonify({"books": all_books})
+    return render_template("mainpage.html", books=all_books)
+
+
+@app.route("/booksearch", methods=["GET"])
+def reviews_post():
+    title_receive = request.args["search"]
+    print(title_receive)
+    # user = db.books.find_one({"title": title_receive})
+    # print(user)
+    return jsonify({"result": "ok"})
+
+
+# @app.route("/home")
+# def mainPage():
+#     return render_template("mainpage.html")
+
+
+# @app.route("/details/<bookId>")
+# def detailPage(bookId):
+#     return render_template("bookdetail.html", bookId=bookId)
 
 
 if __name__ == "__main__":
