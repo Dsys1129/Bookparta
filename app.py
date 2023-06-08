@@ -108,5 +108,32 @@ def get_books():
         return render_template("mainpage.html", books=all_books)
 
 
+@app.route("/reviews", methods=["GET", "POST"])
+def review_post():
+    bookId = request.args.get("bookId")
+
+    if request.method == "GET":
+        if bookId:
+            return render_template("reviewpage.html", bookId=bookId)
+    elif request.method == "POST":
+        bookId_receive = request.form["bookId_give"]
+        userId_receive = request.form["userId_give"]
+        title_receive = request.form["title_give"]
+        contents_receive = request.form["contents_give"]
+        rating_receive = request.form["rating_give"]
+
+        doc = {
+            "bookId": bookId_receive,
+            "userId": userId_receive,
+            "title": title_receive,
+            "contents": contents_receive,
+            "rating": rating_receive,
+        }
+        db.books.update_one(
+            {"_id": ObjectId(bookId_receive)}, {"$push": {"reviews": doc}}
+        )
+        return jsonify({"status": "201"})
+
+
 if __name__ == "__main__":
     app.run("0.0.0.0", port=5000, debug=True)
