@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bookparta</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+      crossorigin="anonymous"
+    />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      $(document).ready(function () {
+        main_page_init();
+        show_books();
+      });
+      function main_page_init() {
+        let userId = window.localStorage.getItem("userId");
+        $("#main-id").text(userId + "님 안녕하세요");
+      }
+
+      function gotoDetailPage(bookId) {
+        let detailPageUrl = "/books/" + bookId;
+        window.location.href = detailPageUrl;
+      }
+
+    </script>
+    <style>
+      .top-div {
+        margin: 40px auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        max-width: 1200px;
+        width: 100%;
+      }
+      .main-id {
+        margin-top: 40px;
+        margin-left: 40px;
+      }
+      .addBookbtn {
+        margin-top: 40px;
+        margin-left: 40px;
+      }
+
+      .search-div {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .center-div {
+        border: 1px solid black;
+        width: 1200px;
+        display: flex;
+        margin: 40px auto;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .search-input {
+        margin-right: 20px;
+        width: 500px;
+        height: 50px;
+      }
+      .search-btn {
+        width: 80px;
+        height: 50px;
+      }
+      .books {
+        margin: 20px auto 0px auto;
+        width: 95%;
+        max-width: 1000px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
+      .book-title {
+        text-align: center;
+      }
+      .card-body {
+        background-color: azure;
+      }
+      .card {
+        border: 1px solid black;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="top-div">
+      <p class="main-id">{{ userId }}님 안녕하세요</p>
+      <button class="addBookbtn">책 등록하기</button>
+    </div>
+    <div class="search-div">
+      <input type="text" placeholder="책 제목으로 검색" class="search-input" />
+      <button class="search-btn">검색</button>
+    </div>
+    <div class="center-div">
+      <div class="books">
+        <div class="row row-cols-1 row-cols-md-3 g-5" id="cards-box">
+          {% for book in books %}
+            <div class="col">
+              <div class="card h-100" onclick="gotoDetailPage('{{ book._id }}')">
+                <img src= {{ book.image }} class="card-img-top" />
+                <div class="card-body">
+                  <h5 class="book-title">{{ book.title }}</h5>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </body>
+</html>

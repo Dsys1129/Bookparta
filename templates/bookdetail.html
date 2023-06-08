@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bookparta</title>
+
+    <style>
+      .detail-top {
+        margin: 50px auto;
+        display: flex;
+        align-items: center;
+        max-width: 1200px;
+        width: 100%;
+      }
+      .book-image {
+        border: 1px solid black;
+        background-color: black;
+        width: 500px;
+        height: 600px;
+      }
+      .book-detail-box {
+        width: 100%;
+        height: 100%;
+        margin-left: auto;
+        margin-right: auto;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        align-self: stretch;
+      }
+
+      .title {
+        font-size: 70px;
+        margin-top: 30px;
+        margin-bottom: 20px;
+      }
+
+      .author {
+        margin-top: 20px;
+        font-size: 40px;
+      }
+
+      .description {
+        margin-top: 30px;
+        font-size: 30px;
+      }
+
+      .review-container {
+        border: 1px solid black;
+        width: 1000px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .review-box {
+        align-self: stretch;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .review-contents {
+        margin-bottom: 20px;
+      }
+
+      .review-contents {
+        margin-top: 30px;
+        display: flex;
+        justify-content: flex-start;
+      }
+    </style>
+
+    <script>
+      $(document).ready(function () {
+        show_details();
+      });
+    </script>
+  </head>
+  <body>
+    <div class="detail-top">
+      <div class="image-box">
+        <img
+          class="book-image"
+          src={{book.image}}
+        />
+      </div>
+      <div class="book-detail-box">
+        <p class="title">{{book.title}}</p>
+        <p class="author">{{book.author}}</p>
+        <p class="description">{{book.description}}</p>
+      </div>
+    </div>
+
+    <hr size="1" width="1400px" />
+
+    <div>
+      <button class="addReviewbtn">리뷰 작성</button>
+    </div>
+
+    {% for review in book.reviews %}
+    <div class="review-container">
+      <div class="review-box">
+        <div class="review-userId">review.userId</div>
+        <div class="review-title">review.title</div>
+        <div class="review-rating">review.rating</div>
+      </div>
+      <div class="review-contents">review.contents</div>
+    </div>
+    {% endfor %}
+  </body>
+</html>
