@@ -24,7 +24,7 @@
         show_books();
       });
       function main_page_init() {
-        let userId = window.localStorage.getItem("userId");
+        let userId = sessionStorage.getItem("userId");
         $(".main-id").text(userId + "님 안녕하세요");
       }
 
