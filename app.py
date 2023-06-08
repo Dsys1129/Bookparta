@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify
 from bson.objectid import ObjectId
 import crawling
+import re
 
 app = Flask(__name__)
 
@@ -81,32 +82,30 @@ def get_book(bookId):
     return render_template("bookdetail.html", book=book)
 
 
+## flask가 queryParameter가 있는 url과 없는 url이 route상으로 구분을 못해서 합침
 @app.route("/books")
 def get_books():
-    # Object형인 id를 serialization 할 수 없어 str로 변경 후 json으로 반환
-    all_books = list(db.books.find({}, {"reviews": False}))
-    for book in all_books:
-        book["_id"] = str(book["_id"])
-    return render_template("mainpage.html", books=all_books)
+    search_title = request.args.get("search")
+    if search_title:
+        pattern = f".*{search_title}.*"
+        all_books = list(
+            db.books.find(
+                {"title": {"$regex": pattern, "$options": "i"}},
+                {"reviews": False, "author": False, "description": False},
+            )
+        )
+        for book in all_books:
+            book["_id"] = str(book["_id"])
 
-
-@app.route("/booksearch", methods=["GET"])
-def reviews_post():
-    title_receive = request.args["search"]
-    print(title_receive)
-    # user = db.books.find_one({"title": title_receive})
-    # print(user)
-    return jsonify({"result": "ok"})
-
-
-# @app.route("/home")
-# def mainPage():
-#     return render_template("mainpage.html")
-
-
-# @app.route("/details/<bookId>")
-# def detailPage(bookId):
-#     return render_template("bookdetail.html", bookId=bookId)
+        return render_template("booksearch.html", books=all_books)
+    else:
+        # Object형인 id를 serialization 할 수 없어 str로 변경 후 json으로 반환
+        all_books = list(
+            db.books.find({}, {"reviews": False, "author": False, "description": False})
+        )
+        for book in all_books:
+            book["_id"] = str(book["_id"])
+        return render_template("mainpage.html", books=all_books)
 
 
 if __name__ == "__main__":
