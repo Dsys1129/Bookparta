@@ -42,13 +42,13 @@
             let title = $('#utitle').val()
             let contents = $('#ucontent').val()
             let rating = $('#rating').val()
-
+            let userId = sessionStorage.getItem("userId");
             let formData = new FormData();
             formData.append("title_give", title);
             formData.append("contents_give", contents);
             formData.append("rating_give", rating);
             formData.append("bookId_give",bookId);
-            formData.append("userId_give","test");
+            formData.append("userId_give",userId);
 
             fetch('/reviews', { method: "POST", body: formData }).then((res) => res.json()).then((data) => {
                 window.location.assign('/books/'+bookId)
