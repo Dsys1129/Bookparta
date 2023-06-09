@@ -63,14 +63,15 @@
         justify-content: space-between;
         align-items: center;
         margin-bottom: 10px;
+        background-color: rgb(12, 94, 245);
       }
 
       .review-contents {
-        margin-top: 20px;
-        margin-bottom: 20px;
         display: flex;
         justify-content: flex-start;
-        padding: 0px 15px 0px 15px;
+        padding: 10px auto 10px auto;
+        margin: 20px 10px 20px 10px; 
+        
       }
       .reviewBtnDiv {
         align-self: stretch;
@@ -86,10 +87,12 @@
         font-size: 20px;
       }
 
-      .review-title {
-        padding-top: 10px;
+      .review-title {   
         font-size: 20px;
+        padding: 10px auto 0px auto;
       }
+
+
     </style>
 
     <script>
@@ -127,9 +130,9 @@
     {% for review in book.reviews %}
     <div class="review-container">
       <div class="review-box">
-        <div style="padding-left: 10px;" class="review-userId">{{review.userId}}</div>
+        <div style="padding-left: 150px;" class="review-userId">{{review.userId}}</div>
         <div class="review-title">{{review.title}}</div>
-        <div style="padding-right: 10px;" class="review-rating">{{review.rating}}</div>
+        <div style="padding-right: 150px;" class="review-rating">{{review.rating}}</div>
       </div>
       <div class="review-contents">{{review.contents}}</div>
     </div>
