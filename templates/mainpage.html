@@ -24,9 +24,8 @@
         show_books();
       });
       function main_page_init() {
-        let userId = sessionStorage.getItem("userId");
-        
-        $(".main-id").text(userId + "님 안녕하세요");
+        let userId = window.localStorage.getItem("userId");
+        $("#main-id").text(userId + "님 안녕하세요");
       }
 
       function gotoDetailPage(bookId) {
@@ -34,43 +33,6 @@
         window.location.href = detailPageUrl;
       }
 
-      function search_book(){
-        let search_input = $(".search-input").val();
-        let searchPageUrl = "/books?search="+search_input;
-        window.location.href = searchPageUrl;
-      }
-
-      //================= 책 등록 =============//
-      function add_book_btn(){
-        let modal = document.getElementById('myModal');
-        modal.style.display = 'block';
-      }
-
-      function modal_ok() {
-        let urlInput = document.getElementById('urlInput').value;
-        let modal = document.getElementById('myModal');
-        let formData = new FormData();
-        formData.append("url",urlInput);
-        fetch("/books", {method:"POST",body: formData})
-        .then((res) => res.json())
-        .then((data) => {
-          
-          if (data['status'] == 201) {
-           alert('책 등록 완료');
-           urlInput.value = '';
-           modal.style.display = 'none';
-           window.location.reload();
-          }
-      })
-    }
-
-      function modal_cancel(){
-        let modal = document.getElementById('myModal');
-        let urlInput = document.getElementById('urlInput');
-        urlInput.value = '';
-        modal.style.display = 'none';
-        
-      }
     </script>
     <style>
       .top-div {
@@ -121,9 +83,11 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        padding-bottom: 20px;
       }
       .book-title {
         text-align: center;
+        font-size: 100%;
       }
       .card-body {
         background-color: azure;
@@ -132,71 +96,15 @@
         border: 1px solid black;
       }
     </style>
-
-    <!-- 책 등록하는 창의 css-->
-    <style>
-    .modal {
-    display: none;
-    position: fixed;
-    z-index: 999;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0, 0, 0, 0.5);
-  }
-  
-  .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 30%;
-    text-align: center;
-  }
-  
-  .button-container {
-    display: flex;
-    justify-content: space-between;
-    margin-top: 20px;
-  }
-  
-  button {
-    padding: 10px 20px;
-    /* background-color: #4CAF50; */
-    /* color: white; */
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-  }
-  
-  #urlInput {
-      height: 60%;
-      font-size: 20px;
-      width: 70%;
-      margin: 0 auto;
-  }
-  
-  /* button:hover {
-    background-color: #45a049;
-  } */
-  
-  h2 {
-    margin-top: 0;
-    margin-bottom: 20px;
-  }
-    </style>
   </head>
-
   <body>
     <div class="top-div">
       <p class="main-id">{{ userId }}님 안녕하세요</p>
-      <button class="addBookbtn" onclick="add_book_btn()">책 등록하기</button>
+      <button class="addBookbtn">책 등록하기</button>
     </div>
     <div class="search-div">
       <input type="text" placeholder="책 제목으로 검색" class="search-input" />
-      <button class="search-btn" onclick="search_book()">검색</button>
+      <button class="search-btn">검색</button>
     </div>
     <div class="center-div">
       <div class="books">
@@ -204,24 +112,13 @@
           {% for book in books %}
             <div class="col">
               <div class="card h-100" onclick="gotoDetailPage('{{ book._id }}')">
-                <img src= {{ book.image }} class="card-img-top" />
+                <img src= {{ book.image }} style="height: 430px;" />
                 <div class="card-body">
                   <h5 class="book-title">{{ book.title }}</h5>
                 </div>
               </div>
             </div>
           {% endfor %}
-        </div>
-      </div>
-    </div>
-    <!-- 책 등록하는 페이지 (Modal)-->
-    <div id="myModal" class="modal">
-      <div class="modal-content">
-        <h2>책 등록</h2>
-        <input type="text" id="urlInput" placeholder="URL을 입력해주세요">
-        <div class="button-container">
-          <button id="modalOkButton" onclick="modal_ok()">등록</button>
-          <button id="modalCancelButton" onclick="modal_cancel()">취소</button>
         </div>
       </div>
     </div>
