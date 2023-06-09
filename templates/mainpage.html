@@ -25,7 +25,6 @@
       });
       function main_page_init() {
         let userId = sessionStorage.getItem("userId");
-        
         $(".main-id").text(userId + "님 안녕하세요");
       }
 
@@ -40,37 +39,6 @@
         window.location.href = searchPageUrl;
       }
 
-      //================= 책 등록 =============//
-      function add_book_btn(){
-        let modal = document.getElementById('myModal');
-        modal.style.display = 'block';
-      }
-
-      function modal_ok() {
-        let urlInput = document.getElementById('urlInput').value;
-        let modal = document.getElementById('myModal');
-        let formData = new FormData();
-        formData.append("url",urlInput);
-        fetch("/books", {method:"POST",body: formData})
-        .then((res) => res.json())
-        .then((data) => {
-          
-          if (data['status'] == 201) {
-           alert('책 등록 완료');
-           urlInput.value = '';
-           modal.style.display = 'none';
-           window.location.reload();
-          }
-      })
-    }
-
-      function modal_cancel(){
-        let modal = document.getElementById('myModal');
-        let urlInput = document.getElementById('urlInput');
-        urlInput.value = '';
-        modal.style.display = 'none';
-        
-      }
     </script>
     <style>
       .top-div {
@@ -121,9 +89,11 @@
         flex-direction: column;
         align-items: center;
         justify-content: center;
+        padding-bottom: 20px;
       }
       .book-title {
         text-align: center;
+        font-size: 100%;
       }
       .card-body {
         background-color: azure;
@@ -196,7 +166,7 @@
     </div>
     <div class="search-div">
       <input type="text" placeholder="책 제목으로 검색" class="search-input" />
-      <button class="search-btn" onclick="search_book()">검색</button>
+      <button class="search-btn">검색</button>
     </div>
     <div class="center-div">
       <div class="books">
@@ -204,7 +174,7 @@
           {% for book in books %}
             <div class="col">
               <div class="card h-100" onclick="gotoDetailPage('{{ book._id }}')">
-                <img src= {{ book.image }} class="card-img-top" />
+                <img src= {{ book.image }} style="height: 430px;" />
                 <div class="card-body">
                   <h5 class="book-title">{{ book.title }}</h5>
                 </div>
